@@ -24,6 +24,20 @@ locals {
     security         = ["roles/essentialcontacts.admin", "roles/logging.configWriter", "roles/orgpolicy.policyAdmin"]
     workload-vending = ["roles/resourcemanager.projectCreator", "roles/resourcemanager.projectIamAdmin"]
   }
+
+  terraform_workspace_ids = {
+    root     = ["ws-KpC9VP64YMPomaBt"]
+    identity = ["ws-swkzrJaDLa3NKBLV"]
+    security = ["ws-ww6SYZjkVHZvu982"]
+    workload-vending = [
+      "ws-UFujonJy987NPZ2f",
+      "ws-psNw7J2A5wnxAsVR",
+      "ws-DubQjmSt2Qt2rRTo",
+      "ws-UY3MxGMWCCDXWmRH",
+      "ws-8zrerh77PKhqrw2s",
+      "ws-ekPdDHUmEVX69Rmt",
+    ]
+  }
 }
 
 resource "google_folder" "platform" {
@@ -94,6 +108,21 @@ resource "google_service_account_iam_member" "platform_admins" {
   service_account_id = each.value.name
   role               = "roles/iam.serviceAccountTokenCreator"
   member             = "user:chris@wozware.com"
+}
+
+resource "google_service_account_iam_member" "terraform_workspaces" {
+  for_each = merge([
+    for account, workspace_ids in local.terraform_workspace_ids : {
+      for workspace_id in workspace_ids : "${account}/${workspace_id}" => {
+        account      = account
+        workspace_id = workspace_id
+      }
+    }
+  ]...)
+
+  service_account_id = google_service_account.terraform[each.value.account].name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principalSet://iam.googleapis.com/projects/162163785431/locations/global/workloadIdentityPools/tfc-pool/attribute.terraform_workspace_id/${each.value.workspace_id}"
 }
 
 resource "google_organization_iam_member" "terraform" {
