@@ -57,9 +57,9 @@ output "projects" {
   description = "Application project contract consumed by application infrastructure workspaces."
   value = {
     for name, project in module.workload_project : name => {
-      project_id                           = project.project_id
-      project_number                       = project.project_number
-      terraform_deployer_service_account   = project.terraform_deployer_service_account
+      project_id                         = project.project_id
+      project_number                     = project.project_number
+      terraform_deployer_service_account = project.terraform_deployer_service_account
     }
   }
 }

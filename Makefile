@@ -1,6 +1,6 @@
 .PHONY: fmt fmt-check validate
 
-TF_DIRS := modules/workload-project live/platform/root live/platform/identity live/platform/security live/platform/workloads live/workloads/scan-service/dev live/workloads/scan-service/test live/workloads/scan-service/prod live/workloads/web-ui/dev live/workloads/web-ui/test live/workloads/web-ui/prod
+TF_DIRS := modules/workload-project live/platform/root live/platform/identity live/platform/security live/platform/workloads
 
 fmt:
 	terraform fmt -recursive

@@ -8,22 +8,16 @@ This `main` branch intentionally deploys only the landing-zone control plane: or
 
 ```text
 Google Cloud Organization: wozware.com
-├── Platform
-│   ├── Terraform Automation project
-│   ├── Central Logging project
-│   ├── Central Security project
-│   └── Shared DNS project
-├── Workloads
-│   ├── Dev
-│   │   ├── Scan Service project
-│   │   └── Web UI project
-│   ├── Test
-│   │   ├── Scan Service project
-│   │   └── Web UI project
-│   └── Prod
-│       ├── Scan Service project
-│       └── Web UI project
-└── Sandbox
+└── Meridian
+    ├── Platform
+    │   └── Meridian Platform project
+    └── Workloads
+        ├── Dev
+        │   └── Scan Service project
+        ├── Test
+        │   └── Scan Service project
+        └── Prod
+            └── Scan Service project
 ```
 
 ## Live workspaces
@@ -33,10 +27,14 @@ Every leaf directory under `live/` is one HCP Terraform workspace working direct
 | Working directory | HCP workspace |
 |---|---|
 | `live/platform/root` | `gcp-platform-root` |
-| `live/platform/workloads` | `gcp-platform-workloads` |
+| `live/platform/workloads` | `gcp-platform-workloads` (folders and all workload projects) |
 | `live/platform/identity` | `gcp-platform-identity` |
 | `live/platform/security` | `gcp-platform-security` |
-| `live/workloads/<app>/<env>` | `gcp-<app>-<env>` |
+
+Application workspaces such as `gcp-scan-service-dev` are intentionally not
+connected to this repository. They are connected to application-owned
+repositories and consume the project contract published by
+`gcp-platform-workloads`.
 
 ## Repository contract
 
@@ -52,7 +50,7 @@ Every leaf directory under `live/` is one HCP Terraform workspace working direct
 2. Workload folder hierarchy
 3. Identity
 4. Security
-5. Application environment projects
+5. Application repositories
 
 HCP Terraform owns state. The root workspace requires an initial GCP Workload Identity Federation trust configured out of band. Root then creates the scoped identities used by downstream workspaces.
 

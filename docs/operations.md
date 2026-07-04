@@ -11,16 +11,16 @@ Create the `gcp-platform-root` HCP Terraform workspace with `live/platform/root`
 3. Configure federation for the created identity, security, and workload-vending service accounts.
 4. Apply `gcp-platform-identity`.
 5. Apply `gcp-platform-security`.
-6. Apply each application environment workspace.
+6. Connect each application workspace to its application-owned repository.
 
 Configure state sharing narrowly:
 
 - Root outputs → identity and security
-- Workload-folder outputs → identity and application workspaces
+- Workload project outputs → identity and application workspaces
 
 ## Add an application project
 
-Create one directory per environment, such as `live/workloads/orders/dev`, and one matching HCP workspace. The workspace calls `modules/workload-project` to create the project, APIs, labels, IAM, and application deployment identity.
+Add the application once to `local.workloads` in `live/platform/workloads/projects.tf`. The centralized workspace generates dev, test, and prod projects, baseline APIs, IAM, and deployment identities. A provisioning workflow then connects the three clean application workspaces to the application repository's environment directories and grants them access to the published project outputs.
 
 ## Recovery and deletion
 

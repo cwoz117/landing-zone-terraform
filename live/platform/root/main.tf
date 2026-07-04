@@ -35,9 +35,9 @@ locals {
   }
 
   organization_roles = {
-    root             = ["roles/resourcemanager.folderAdmin", "roles/resourcemanager.projectCreator", "roles/resourcemanager.projectIamAdmin", "roles/serviceusage.serviceUsageAdmin"]
-    identity         = ["roles/resourcemanager.folderAdmin", "roles/resourcemanager.organizationAdmin", "roles/resourcemanager.projectIamAdmin"]
-    security         = ["roles/essentialcontacts.admin", "roles/logging.configWriter", "roles/orgpolicy.policyAdmin"]
+    root     = ["roles/resourcemanager.folderAdmin", "roles/resourcemanager.projectCreator", "roles/resourcemanager.projectIamAdmin", "roles/serviceusage.serviceUsageAdmin"]
+    identity = ["roles/resourcemanager.folderAdmin", "roles/resourcemanager.organizationAdmin", "roles/resourcemanager.projectIamAdmin"]
+    security = ["roles/essentialcontacts.admin", "roles/logging.configWriter", "roles/orgpolicy.policyAdmin"]
     workload-vending = [
       "roles/billing.projectManager",
       "roles/iam.serviceAccountAdmin",

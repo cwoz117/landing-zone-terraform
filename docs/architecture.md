@@ -8,15 +8,15 @@ The `main` branch demonstrates the landing-zone control plane without runtime in
 
 A reusable implementation belongs under `modules/`. A deployed workspace instance belongs under `live/` and expresses concrete organization, billing, project, IAM, and environment values directly at the call site. One `.tf` file is not a state boundary; one leaf directory under `live/` is.
 
-Single-use organization root, workload hierarchy, identity, and security resources remain directly in their live configurations. The workload-project module remains reusable because every application environment instantiates it independently.
+Single-use organization root, workload hierarchy, identity, and security resources remain directly in their live configurations. The centralized workload workspace instantiates the reusable workload-project module once per generated application environment.
 
 ## State boundaries
 
-Root, workload hierarchy, identity, security, and every application environment use separate HCP Terraform state. Downstream workspaces consume only explicit root outputs through restricted remote-state sharing.
+Root, centralized workload vending, identity, and security use separate HCP Terraform state. Application repositories use separate application-infrastructure workspaces and consume only explicit outputs from the centralized workload workspace and other platform workspaces.
 
 ## Resource hierarchy
 
-Platform resources are separate from workload resources. Workload folders are divided into dev, test, and prod policy boundaries. Each application environment receives its own GCP project and HCP Terraform workspace.
+Platform resources are separate from workload resources. Workload folders are divided into dev, test, and prod policy boundaries. A single application declaration expands into one GCP project per environment. Application HCP Terraform workspaces do not own project vending; they own resources inside their assigned projects.
 
 ## Identity
 
