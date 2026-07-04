@@ -9,15 +9,13 @@ locals {
   }
 
   security_project_role_members = {
-    security = {
+    meridian-platform = {
       "roles/securitycenter.admin"           = ["user:chris@wozware.com"]
       "roles/serviceusage.serviceUsageAdmin" = ["serviceAccount:terraform-security@wozware-meridian-platform.iam.gserviceaccount.com"]
       "roles/viewer"                         = ["user:chris@wozware.com"]
-    }
-    logging = {
-      "roles/logging.admin"  = ["user:chris@wozware.com"]
-      "roles/logging.viewer" = ["user:chris@wozware.com"]
-      "roles/storage.admin"  = ["serviceAccount:terraform-security@wozware-meridian-platform.iam.gserviceaccount.com"]
+      "roles/logging.admin"                  = ["user:chris@wozware.com"]
+      "roles/logging.viewer"                 = ["user:chris@wozware.com"]
+      "roles/storage.admin"                  = ["serviceAccount:terraform-security@wozware-meridian-platform.iam.gserviceaccount.com"]
     }
   }
 
