@@ -38,7 +38,7 @@ locals {
     root             = ["roles/resourcemanager.folderAdmin", "roles/resourcemanager.projectCreator", "roles/resourcemanager.projectIamAdmin", "roles/serviceusage.serviceUsageAdmin"]
     identity         = ["roles/resourcemanager.folderAdmin", "roles/resourcemanager.organizationAdmin", "roles/resourcemanager.projectIamAdmin"]
     security         = ["roles/essentialcontacts.admin", "roles/logging.configWriter", "roles/orgpolicy.policyAdmin"]
-    workload-vending = ["roles/resourcemanager.projectCreator", "roles/resourcemanager.projectIamAdmin"]
+    workload-vending = ["roles/billing.projectManager", "roles/resourcemanager.projectCreator", "roles/resourcemanager.projectIamAdmin"]
   }
 
   terraform_workspace_ids = {
