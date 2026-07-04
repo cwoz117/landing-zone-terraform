@@ -66,7 +66,7 @@ resource "google_folder" "meridian" {
   parent       = "organizations/${local.organization_id}"
 }
 
-resource "google_folder" "platform" {
+resource "google_folder" "platform_projects" {
   display_name = "Platform"
   parent       = google_folder.meridian.name
 }
@@ -76,7 +76,7 @@ resource "google_project" "platform" {
 
   project_id      = "${local.project_id_prefix}-${each.key}"
   name            = each.value.name
-  folder_id       = google_folder.platform.name
+  folder_id       = google_folder.platform_projects.name
   billing_account = local.billing_account_id
   labels          = { managed-by = "terraform", layer = "foundation", owner = "cloud-platform" }
   deletion_policy = "PREVENT"
@@ -159,7 +159,7 @@ resource "google_billing_account_iam_member" "identity" {
 output "folder_ids" {
   value = {
     meridian = google_folder.meridian.folder_id
-    platform = google_folder.platform.folder_id
+    platform = google_folder.platform_projects.folder_id
   }
 }
 
