@@ -6,6 +6,11 @@ locals {
   ]
 }
 
+import {
+  to = google_org_policy_policy.disable_service_account_keys
+  id = "organizations/748235834085/policies/iam.disableServiceAccountKeyCreation"
+}
+
 resource "google_org_policy_policy" "disable_service_account_keys" {
   name   = "${local.organization_parent}/policies/iam.disableServiceAccountKeyCreation"
   parent = local.organization_parent
