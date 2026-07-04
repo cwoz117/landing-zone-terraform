@@ -20,6 +20,15 @@ resource "google_folder" "environment" {
   parent       = google_folder.workloads.name
 }
 
+# Project Creator does not include resourcemanager.projects.update. Project
+# Mover is the narrowest predefined role containing that permission; scoping it
+# to Workloads prevents the vending identity from moving platform projects.
+resource "google_folder_iam_member" "workload_project_manager" {
+  folder = google_folder.workloads.name
+  role   = "roles/resourcemanager.projectMover"
+  member = "serviceAccount:terraform-workload-vending@wozware-meridian-platform.iam.gserviceaccount.com"
+}
+
 # This is a deliberate cross-workspace interface consumed by workload projects.
 output "folder_ids" {
   value = merge(

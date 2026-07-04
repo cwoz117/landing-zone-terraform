@@ -51,6 +51,8 @@ module "workload_project" {
   iam = {
     (each.value.environment == "prod" ? "roles/viewer" : "roles/editor") = ["user:chris@wozware.com"]
   }
+
+  depends_on = [google_folder_iam_member.workload_project_manager]
 }
 
 output "projects" {
