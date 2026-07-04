@@ -56,9 +56,19 @@ locals {
   }
 }
 
-resource "google_folder" "platform" {
+moved {
+  from = google_folder.platform
+  to   = google_folder.meridian
+}
+
+resource "google_folder" "meridian" {
   display_name = "Meridian"
   parent       = "organizations/${local.organization_id}"
+}
+
+resource "google_folder" "platform" {
+  display_name = "Platform"
+  parent       = google_folder.meridian.name
 }
 
 resource "google_project" "platform" {
@@ -147,7 +157,10 @@ resource "google_billing_account_iam_member" "identity" {
 
 # These outputs are the published interface for downstream HCP Terraform workspaces.
 output "folder_ids" {
-  value = { meridian = google_folder.platform.folder_id }
+  value = {
+    meridian = google_folder.meridian.folder_id
+    platform = google_folder.platform.folder_id
+  }
 }
 
 output "project_ids" {
