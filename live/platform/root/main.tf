@@ -5,10 +5,14 @@ locals {
   billing_account_id = "017013-B52A7F-45A636"
   project_id_prefix  = "wozware"
 
+  # Empty for this migration apply so the legacy projects are deleted before
+  # the replacement consumes another slot in the demo billing quota.
   platform_projects = {
-    logging  = { name = "Central Logging", services = ["logging.googleapis.com", "storage.googleapis.com"] }
-    security = { name = "Central Security", services = ["securitycenter.googleapis.com", "cloudkms.googleapis.com", "secretmanager.googleapis.com"] }
-    dns      = { name = "Shared DNS", services = ["dns.googleapis.com", "servicenetworking.googleapis.com"] }
+    for key, project in {
+      logging  = { name = "Central Logging", services = ["logging.googleapis.com", "storage.googleapis.com"] }
+      security = { name = "Central Security", services = ["securitycenter.googleapis.com", "cloudkms.googleapis.com", "secretmanager.googleapis.com"] }
+      dns      = { name = "Shared DNS", services = ["dns.googleapis.com", "servicenetworking.googleapis.com"] }
+    } : key => project if false
   }
 
   terraform_service_accounts = {
@@ -41,12 +45,7 @@ locals {
 }
 
 resource "google_folder" "platform" {
-  display_name = "Platform"
-  parent       = "organizations/${local.organization_id}"
-}
-
-resource "google_folder" "sandbox" {
-  display_name = "Sandbox"
+  display_name = "Meridian"
   parent       = "organizations/${local.organization_id}"
 }
 
@@ -164,7 +163,7 @@ resource "google_billing_account_iam_member" "identity" {
 
 # These outputs are the published interface for downstream HCP Terraform workspaces.
 output "folder_ids" {
-  value = { platform = google_folder.platform.folder_id, sandbox = google_folder.sandbox.folder_id }
+  value = { meridian = google_folder.platform.folder_id }
 }
 
 output "project_ids" {
