@@ -58,7 +58,9 @@ resource "google_project" "platform" {
   folder_id       = google_folder.platform.name
   billing_account = local.billing_account_id
   labels          = { managed-by = "terraform", layer = "foundation", owner = "cloud-platform" }
-  deletion_policy = "PREVENT"
+  # Temporary migration setting: these three projects are being consolidated
+  # into the single Meridian platform project in the next apply.
+  deletion_policy = "DELETE"
 }
 
 resource "google_project_service" "platform" {
@@ -86,7 +88,16 @@ resource "google_project" "automation" {
 }
 
 resource "google_project_service" "automation" {
-  for_each = toset(["iam.googleapis.com", "iamcredentials.googleapis.com", "serviceusage.googleapis.com"])
+  for_each = toset([
+    "cloudbilling.googleapis.com",
+    "cloudresourcemanager.googleapis.com",
+    "essentialcontacts.googleapis.com",
+    "iam.googleapis.com",
+    "iamcredentials.googleapis.com",
+    "logging.googleapis.com",
+    "orgpolicy.googleapis.com",
+    "serviceusage.googleapis.com",
+  ])
 
   project            = google_project.automation.project_id
   service            = each.value
