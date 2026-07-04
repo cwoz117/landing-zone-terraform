@@ -5,14 +5,19 @@ locals {
   billing_account_id = "017013-B52A7F-45A636"
   project_id_prefix  = "wozware"
 
-  # Empty for this migration apply so the legacy projects are deleted before
-  # the replacement consumes another slot in the demo billing quota.
   platform_projects = {
-    for key, project in {
-      logging  = { name = "Central Logging", services = ["logging.googleapis.com", "storage.googleapis.com"] }
-      security = { name = "Central Security", services = ["securitycenter.googleapis.com", "cloudkms.googleapis.com", "secretmanager.googleapis.com"] }
-      dns      = { name = "Shared DNS", services = ["dns.googleapis.com", "servicenetworking.googleapis.com"] }
-    } : key => project if false
+    meridian-platform = {
+      name = "Meridian Platform"
+      services = [
+        "cloudkms.googleapis.com",
+        "dns.googleapis.com",
+        "logging.googleapis.com",
+        "secretmanager.googleapis.com",
+        "securitycenter.googleapis.com",
+        "servicenetworking.googleapis.com",
+        "storage.googleapis.com",
+      ]
+    }
   }
 
   terraform_service_accounts = {
@@ -49,14 +54,6 @@ resource "google_folder" "platform" {
   parent       = "organizations/${local.organization_id}"
 }
 
-# Transitional apply: disable provider-level protection before removing the
-# existing Sandbox folder in the next change.
-resource "google_folder" "sandbox" {
-  display_name        = "Sandbox"
-  parent              = "organizations/${local.organization_id}"
-  deletion_protection = false
-}
-
 resource "google_project" "platform" {
   for_each = local.platform_projects
 
@@ -65,9 +62,7 @@ resource "google_project" "platform" {
   folder_id       = google_folder.platform.name
   billing_account = local.billing_account_id
   labels          = { managed-by = "terraform", layer = "foundation", owner = "cloud-platform" }
-  # Temporary migration setting: these three projects are being consolidated
-  # into the single Meridian platform project in the next apply.
-  deletion_policy = "DELETE"
+  deletion_policy = "PREVENT"
 }
 
 resource "google_project_service" "platform" {
