@@ -41,6 +41,7 @@ locals {
     workload-vending = [
       "roles/billing.projectManager",
       "roles/iam.serviceAccountAdmin",
+      "roles/resourcemanager.folderAdmin",
       "roles/resourcemanager.projectCreator",
       "roles/resourcemanager.projectIamAdmin",
       "roles/serviceusage.serviceUsageAdmin",
