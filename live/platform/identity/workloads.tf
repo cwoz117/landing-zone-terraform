@@ -2,16 +2,16 @@ locals {
   workload_folder_role_members = {
     dev = {
       "roles/browser"                        = ["user:chris@wozware.com"]
-      "roles/resourcemanager.projectCreator" = ["serviceAccount:terraform-workload-vending@wozware-terraform-automation.iam.gserviceaccount.com"]
+      "roles/resourcemanager.projectCreator" = ["serviceAccount:terraform-workload-vending@wozware-meridian-platform.iam.gserviceaccount.com"]
     }
     test = {
       "roles/browser"                        = ["user:chris@wozware.com"]
-      "roles/resourcemanager.projectCreator" = ["serviceAccount:terraform-workload-vending@wozware-terraform-automation.iam.gserviceaccount.com"]
+      "roles/resourcemanager.projectCreator" = ["serviceAccount:terraform-workload-vending@wozware-meridian-platform.iam.gserviceaccount.com"]
     }
     prod = {
       "roles/browser"                        = ["user:chris@wozware.com"]
       "roles/viewer"                         = ["user:chris@wozware.com"]
-      "roles/resourcemanager.projectCreator" = ["serviceAccount:terraform-workload-vending@wozware-terraform-automation.iam.gserviceaccount.com"]
+      "roles/resourcemanager.projectCreator" = ["serviceAccount:terraform-workload-vending@wozware-meridian-platform.iam.gserviceaccount.com"]
     }
   }
 }

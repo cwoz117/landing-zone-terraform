@@ -87,34 +87,6 @@ resource "google_project_service" "platform" {
   disable_on_destroy = false
 }
 
-resource "google_project" "automation" {
-  project_id      = "${local.project_id_prefix}-terraform-automation"
-  name            = "Terraform Automation"
-  folder_id       = google_folder.platform.name
-  billing_account = local.billing_account_id
-  labels          = { managed-by = "terraform", layer = "automation" }
-  # Transitional: removed after its service accounts and workspace identities
-  # have migrated to the Meridian platform project.
-  deletion_policy = "DELETE"
-}
-
-resource "google_project_service" "automation" {
-  for_each = toset([
-    "cloudbilling.googleapis.com",
-    "cloudresourcemanager.googleapis.com",
-    "essentialcontacts.googleapis.com",
-    "iam.googleapis.com",
-    "iamcredentials.googleapis.com",
-    "logging.googleapis.com",
-    "orgpolicy.googleapis.com",
-    "serviceusage.googleapis.com",
-  ])
-
-  project            = google_project.automation.project_id
-  service            = each.value
-  disable_on_destroy = false
-}
-
 resource "google_service_account" "terraform" {
   for_each = local.terraform_service_accounts
 
