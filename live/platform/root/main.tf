@@ -9,11 +9,18 @@ locals {
     meridian-platform = {
       name = "Meridian Platform"
       services = [
+        "cloudbilling.googleapis.com",
         "cloudkms.googleapis.com",
+        "cloudresourcemanager.googleapis.com",
         "dns.googleapis.com",
+        "essentialcontacts.googleapis.com",
+        "iam.googleapis.com",
+        "iamcredentials.googleapis.com",
         "logging.googleapis.com",
+        "orgpolicy.googleapis.com",
         "secretmanager.googleapis.com",
         "securitycenter.googleapis.com",
+        "serviceusage.googleapis.com",
         "servicenetworking.googleapis.com",
         "storage.googleapis.com",
       ]
@@ -86,7 +93,9 @@ resource "google_project" "automation" {
   folder_id       = google_folder.platform.name
   billing_account = local.billing_account_id
   labels          = { managed-by = "terraform", layer = "automation" }
-  deletion_policy = "PREVENT"
+  # Transitional: removed after its service accounts and workspace identities
+  # have migrated to the Meridian platform project.
+  deletion_policy = "DELETE"
 }
 
 resource "google_project_service" "automation" {
@@ -109,10 +118,10 @@ resource "google_project_service" "automation" {
 resource "google_service_account" "terraform" {
   for_each = local.terraform_service_accounts
 
-  project      = google_project.automation.project_id
+  project      = google_project.platform["meridian-platform"].project_id
   account_id   = "terraform-${each.key}"
   display_name = "Terraform: ${each.value}"
-  depends_on   = [google_project_service.automation]
+  depends_on   = [google_project_service.platform]
 }
 
 resource "google_service_account_iam_member" "platform_admins" {
