@@ -49,6 +49,14 @@ resource "google_folder" "platform" {
   parent       = "organizations/${local.organization_id}"
 }
 
+# Transitional apply: disable provider-level protection before removing the
+# existing Sandbox folder in the next change.
+resource "google_folder" "sandbox" {
+  display_name        = "Sandbox"
+  parent              = "organizations/${local.organization_id}"
+  deletion_protection = false
+}
+
 resource "google_project" "platform" {
   for_each = local.platform_projects
 
