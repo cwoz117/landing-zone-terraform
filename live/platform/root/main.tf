@@ -48,17 +48,10 @@ locals {
   }
 
   terraform_workspace_ids = {
-    root     = ["ws-KpC9VP64YMPomaBt"]
-    identity = ["ws-swkzrJaDLa3NKBLV"]
-    security = ["ws-ww6SYZjkVHZvu982"]
-    workload-vending = [
-      "ws-UFujonJy987NPZ2f",
-      "ws-psNw7J2A5wnxAsVR",
-      "ws-DubQjmSt2Qt2rRTo",
-      "ws-UY3MxGMWCCDXWmRH",
-      "ws-8zrerh77PKhqrw2s",
-      "ws-ekPdDHUmEVX69Rmt",
-    ]
+    root             = []
+    identity         = ["ws-swkzrJaDLa3NKBLV"]
+    security         = ["ws-ww6SYZjkVHZvu982"]
+    workload-vending = ["ws-KpC9VP64YMPomaBt"]
   }
 }
 
