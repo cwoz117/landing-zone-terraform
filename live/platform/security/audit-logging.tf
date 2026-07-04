@@ -1,5 +1,5 @@
 resource "google_storage_bucket" "audit_logs" {
-  project                     = data.terraform_remote_state.root.outputs.project_ids["logging"]
+  project                     = data.terraform_remote_state.root.outputs.project_ids["meridian-platform"]
   name                        = "wozware-audit-logs"
   location                    = "northamerica-northeast1"
   uniform_bucket_level_access = true
