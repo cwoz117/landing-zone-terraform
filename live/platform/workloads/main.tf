@@ -1,6 +1,4 @@
-provider "google" {
-  impersonate_service_account = "terraform-root@wozware-terraform-automation.iam.gserviceaccount.com"
-}
+provider "google" {}
 
 resource "google_folder" "workloads" {
   display_name = "Workloads"

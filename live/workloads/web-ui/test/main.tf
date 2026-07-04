@@ -1,4 +1,4 @@
-provider "google" { impersonate_service_account = "terraform-workload-vending@wozware-terraform-automation.iam.gserviceaccount.com" }
+provider "google" {}
 data "terraform_remote_state" "folders" {
   backend = "remote"
   config = {

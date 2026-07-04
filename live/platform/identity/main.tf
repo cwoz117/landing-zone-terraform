@@ -1,6 +1,4 @@
-provider "google" {
-  impersonate_service_account = "terraform-identity@wozware-terraform-automation.iam.gserviceaccount.com"
-}
+provider "google" {}
 
 data "terraform_remote_state" "root" {
   backend = "remote"
